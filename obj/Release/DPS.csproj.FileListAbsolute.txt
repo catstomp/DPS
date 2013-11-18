@@ -1,0 +1,25 @@
+C:\Users\Zac\AppData\Local\Temporary Projects\DPS\obj\Release\DPS.csprojResolveAssemblyReference.cache
+C:\Users\Zac\Documents\TerrariaFolder\tShock\My Plugins (and modified ones)\DPS (1,14)\DPS\DPS\obj\Release\DPS.csprojResolveAssemblyReference.cache
+C:\Users\Zac\Documents\TerrariaFolder\tShock\My Plugins (and modified ones)\DPS (1,14)\DPS\DPS\bin\Release\DPS.dll
+C:\Users\Zac\Documents\TerrariaFolder\tShock\My Plugins (and modified ones)\DPS (1,14)\DPS\DPS\bin\Release\DPS.pdb
+C:\Users\Zac\Documents\TerrariaFolder\tShock\My Plugins (and modified ones)\DPS (1,14)\DPS\DPS\bin\Release\Mono.Data.Sqlite.dll
+C:\Users\Zac\Documents\TerrariaFolder\tShock\My Plugins (and modified ones)\DPS (1,14)\DPS\DPS\bin\Release\MySql.Data.dll
+C:\Users\Zac\Documents\TerrariaFolder\tShock\My Plugins (and modified ones)\DPS (1,14)\DPS\DPS\bin\Release\Newtonsoft.Json.dll
+C:\Users\Zac\Documents\TerrariaFolder\tShock\My Plugins (and modified ones)\DPS (1,14)\DPS\DPS\bin\Release\TerrariaServer.exe
+C:\Users\Zac\Documents\TerrariaFolder\tShock\My Plugins (and modified ones)\DPS (1,14)\DPS\DPS\bin\Release\TShockAPI.dll
+C:\Users\Zac\Documents\TerrariaFolder\tShock\My Plugins (and modified ones)\DPS (1,14)\DPS\DPS\bin\Release\HttpServer.dll
+C:\Users\Zac\Documents\TerrariaFolder\tShock\My Plugins (and modified ones)\DPS (1,14)\DPS\DPS\bin\Release\TShockAPI.pdb
+C:\Users\Zac\Documents\TerrariaFolder\tShock\My Plugins (and modified ones)\DPS (1,14)\DPS\DPS\obj\Release\DPS.dll
+C:\Users\Zac\Documents\TerrariaFolder\tShock\My Plugins (and modified ones)\DPS (1,14)\DPS\DPS\obj\Release\DPS.pdb
+C:\Users\Zac\Documents\TerrariaFolder\tShock\My Plugins (and modified ones)\DPS (1,14)\bin\Release\DPS.dll
+C:\Users\Zac\Documents\TerrariaFolder\tShock\My Plugins (and modified ones)\DPS (1,14)\bin\Release\DPS.pdb
+C:\Users\Zac\Documents\TerrariaFolder\tShock\My Plugins (and modified ones)\DPS (1,14)\bin\Release\Mono.Data.Sqlite.dll
+C:\Users\Zac\Documents\TerrariaFolder\tShock\My Plugins (and modified ones)\DPS (1,14)\bin\Release\MySql.Data.dll
+C:\Users\Zac\Documents\TerrariaFolder\tShock\My Plugins (and modified ones)\DPS (1,14)\bin\Release\Newtonsoft.Json.dll
+C:\Users\Zac\Documents\TerrariaFolder\tShock\My Plugins (and modified ones)\DPS (1,14)\bin\Release\TerrariaServer.exe
+C:\Users\Zac\Documents\TerrariaFolder\tShock\My Plugins (and modified ones)\DPS (1,14)\bin\Release\TShockAPI.dll
+C:\Users\Zac\Documents\TerrariaFolder\tShock\My Plugins (and modified ones)\DPS (1,14)\bin\Release\HttpServer.dll
+C:\Users\Zac\Documents\TerrariaFolder\tShock\My Plugins (and modified ones)\DPS (1,14)\bin\Release\TShockAPI.pdb
+C:\Users\Zac\Documents\TerrariaFolder\tShock\My Plugins (and modified ones)\DPS (1,14)\obj\Release\DPS.csprojResolveAssemblyReference.cache
+C:\Users\Zac\Documents\TerrariaFolder\tShock\My Plugins (and modified ones)\DPS (1,14)\obj\Release\DPS.dll
+C:\Users\Zac\Documents\TerrariaFolder\tShock\My Plugins (and modified ones)\DPS (1,14)\obj\Release\DPS.pdb
