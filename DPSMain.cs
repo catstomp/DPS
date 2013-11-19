@@ -140,6 +140,11 @@ namespace DPS
             try
             {
                 TSPlayer player = args.Player;
+                if (!player.RealPlayer)
+                {
+                    player.SendErrorMessage("You must use this command in-game.");
+                    return;
+                }
                 DPSPlayer dpsplayer = DPSPlayers[player.Index];
 
                 if (args.Parameters.Count == 1)
@@ -164,7 +169,7 @@ namespace DPS
                     }
                     if (option == "notifyinterval")
                     {
-                        player.SendErrorMessage(SyntaxErrorPrefix + "/dps notifyinterval <new interval>");
+                        player.SendSuccessMessage(String.Format("Your notify interval is {0}. To change this interval use '/dps notifyinterval <new interval>'.", dpsplayer.notifyinterval));
                         return;
                     }
                     else if (option == "reset")
@@ -194,6 +199,11 @@ namespace DPS
                             return;
                         }
                         dpsplayer.notifyinterval = Convert.ToInt32(args.Parameters[1]);
+                        if (dpsplayer.notifyinterval < 1)
+                        {
+                            player.SendErrorMessage("Notify interval must be positive");
+                            return;
+                        }
                         player.SendSuccessMessage(String.Format("You will now receive DPS notifications every {0} seconds.", dpsplayer.notifyinterval));
                         return;
                     }
