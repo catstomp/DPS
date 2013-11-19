@@ -20,7 +20,7 @@ namespace DPS
     [ApiVersion(1, 14)]
     public class DPS : TerrariaPlugin
     {
-        public override Version Version { get { return new Version(1, 1, 0); } }
+        public override Version Version { get { return new Version(1, 2, 0); } }
 
         public override string Name { get { return "DPS"; } }
 
@@ -82,41 +82,41 @@ namespace DPS
 
                         TSPlayer player = TShock.Players[args.Msg.whoAmI];
                         DPSPlayer dpsplayer = DPSPlayers[player.Index];
-                        //player.SendInfoMessage(NPCID + " " + Damage + " " + Knockback + " " + Direction + " " + Crit);
-                        dpsplayer.totaldamage += Damage;
-                        dpsplayer.dpstotal += Damage;
+                        int realdamage = Convert.ToInt32(Damage);
+                        if (Crit)
+                        {
+                            realdamage = Convert.ToInt32(realdamage * 1.85);
+                        }
+                        
+                        dpsplayer.totaldamage += realdamage;
                         dpsplayer.attackamount += 1;
 
-                        if (!dpsplayer.countingdps)
-                        {
-                            dpsplayer.countingdps = true;
-                            dpsplayer.lasttime = DateTime.Now;
-                            dpsplayer.timespan = 0;
-                            //commented this instead of removing it, just for testing purposes
-                            //var newthread = new DamageThread(args);
-                            //Thread thread = new Thread(new ThreadStart(newthread.CalcDPS));
-                            //thread.Start();
-                        }
-                        dpsplayer.timespan += (DateTime.Now - dpsplayer.lasttime).TotalSeconds;
-                        dpsplayer.lasttime = DateTime.Now;
+                        double timesincelast = (DateTime.Now - dpsplayer.prevtime).TotalSeconds;
+                        dpsplayer.timespan += timesincelast;
+                        var dps = dpsplayer.dps;
 
-                        if (dpsplayer.timespan >= dpsplayer.notifyinterval && (DateTime.Now - dpsplayer.lasttime).TotalSeconds <= 2 * dpsplayer.notifyinterval)
+                        if (timesincelast != 0 && timesincelast < dpsplayer.notifyinterval * 2)
                         {
-                            int dps = Convert.ToInt32(dpsplayer.dpstotal / dpsplayer.timespan);
-                            if (dps > 0)
-                            {
-                                dpsplayer.dps = dps;
-                            }
+                            //new formula, basically half way between the average between the previous dps, and the instantaneous dps
+                            //the instantaneous dps is calculated by the damage done now over the time since the last attack
+                            dps = Convert.ToInt32(((realdamage / timesincelast * 2) + (dpsplayer.dps)) / 3);
+                        }
+                        if (dps > 0)
+                        {
+                            dpsplayer.dps = dps;
+                        }
+                        if (dpsplayer.timespan >= dpsplayer.notifyinterval)
+                        {
                             if (dpsplayer.notify)
                             {
                                 dpsplayer.dpsstats = String.Format("Damage Summary: [DPS: {0}, Dmg/Attk: {1}, Total Attks: {2}, Total Dmg: {3}]", dpsplayer.dps, dpsplayer.totaldamage / dpsplayer.attackamount, dpsplayer.attackamount, dpsplayer.totaldamage);
                                 player.SendSuccessMessage(dpsplayer.dpsstats);
                             }
-                            dpsplayer.dpstotal = 0;
-                            dpsplayer.countingdps = false;
-                            dpsplayer.seconds = 0;
                             dpsplayer.timespan = 0;
                         }
+
+                        dpsplayer.prevtime = DateTime.Now;
+                        dpsplayer.prevdmg = realdamage;
                     }
                 }
             }
@@ -214,61 +214,6 @@ namespace DPS
             catch (Exception e)
             {
                 Log.ConsoleError("DPS CMD Error: " + e.Message);
-            }
-        }
-    }
-    public class DamageThread
-    {
-        GetDataEventArgs args;
-        TSPlayer player;
-        DPSPlayer dpsplayer;
-        public DamageThread(GetDataEventArgs args)
-        {
-            this.args = args;
-            this.player = TShock.Players[args.Msg.whoAmI];
-            this.dpsplayer = DPS.DPSPlayers[args.Msg.whoAmI];
-        }
-        public void CalcDPS()
-        {
-            try
-            {
-                dpsplayer.seconds = 0;
-                while (dpsplayer.countingdps && !Netplay.disconnect && dpsplayer.seconds++ < 5)
-                {
-                    System.Threading.Thread.Sleep(1000);
-                    if (player == null)
-                    {
-                        Log.ConsoleError("Player left before notified of DPS.");
-                        return;
-                    }
-                    if (dpsplayer.timespan < 1)
-                    {
-                        dpsplayer.timespan = 1;
-                    }
-                    int dps = Convert.ToInt32(dpsplayer.dpstotal / dpsplayer.timespan);
-                    if (dps > 0)
-                    {
-                        dpsplayer.dps = dps;
-                    }
-                    if (dpsplayer.seconds > 4)
-                    {
-                        dpsplayer.countingdps = false;
-                    }
-                }
-                if (dpsplayer.notify)
-                {
-                    dpsplayer.dpsstats = String.Format("Damage Summary: [DPS: {0}, Dmg/Attk: {1}, Total Attks: {2}, Total Dmg: {3}]", dpsplayer.dps, dpsplayer.totaldamage / dpsplayer.attackamount, dpsplayer.attackamount, dpsplayer.totaldamage);
-                    player.SendSuccessMessage(dpsplayer.dpsstats);
-                }
-                dpsplayer.dpstotal = 0;
-                dpsplayer.countingdps = false;
-                dpsplayer.seconds = 0;
-                dpsplayer.timespan = 0;
-            }
-            catch (Exception e)
-            {
-                Log.ConsoleError("CalcDPS Error: " + e.Message);
-                DPS.DPSPlayers[args.Index].countingdps = false;
             }
         }
     }
