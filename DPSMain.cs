@@ -20,7 +20,7 @@ namespace DPS
     [ApiVersion(1, 14)]
     public class DPS : TerrariaPlugin
     {
-        public override Version Version { get { return new Version(1, 0, 0); } }
+        public override Version Version { get { return new Version(1, 1, 0); } }
 
         public override string Name { get { return "DPS"; } }
 
@@ -92,13 +92,31 @@ namespace DPS
                             dpsplayer.countingdps = true;
                             dpsplayer.lasttime = DateTime.Now;
                             dpsplayer.timespan = 0;
-                            var newthread = new DamageThread(args);
-                            Thread thread = new Thread(new ThreadStart(newthread.CalcDPS));
-                            thread.Start();
+                            //commented this instead of removing it, just for testing purposes
+                            //var newthread = new DamageThread(args);
+                            //Thread thread = new Thread(new ThreadStart(newthread.CalcDPS));
+                            //thread.Start();
                         }
                         dpsplayer.timespan += (DateTime.Now - dpsplayer.lasttime).TotalSeconds;
-                        //player.SendSuccessMessage(String.Format("Curr time: {0}, Prev time: {1}, Dif: {2}, Span: {3}", DateTime.Now, dpsplayer.lasttime, (DateTime.Now - dpsplayer.lasttime).TotalSeconds, dpsplayer.timespan));
                         dpsplayer.lasttime = DateTime.Now;
+
+                        if (dpsplayer.timespan >= dpsplayer.notifyinterval && (DateTime.Now - dpsplayer.lasttime).TotalSeconds <= 2 * dpsplayer.notifyinterval)
+                        {
+                            int dps = Convert.ToInt32(dpsplayer.dpstotal / dpsplayer.timespan);
+                            if (dps > 0)
+                            {
+                                dpsplayer.dps = dps;
+                            }
+                            if (dpsplayer.notify)
+                            {
+                                dpsplayer.dpsstats = String.Format("Damage Summary: [DPS: {0}, Dmg/Attk: {1}, Total Attks: {2}, Total Dmg: {3}]", dpsplayer.dps, dpsplayer.totaldamage / dpsplayer.attackamount, dpsplayer.attackamount, dpsplayer.totaldamage);
+                                player.SendSuccessMessage(dpsplayer.dpsstats);
+                            }
+                            dpsplayer.dpstotal = 0;
+                            dpsplayer.countingdps = false;
+                            dpsplayer.seconds = 0;
+                            dpsplayer.timespan = 0;
+                        }
                     }
                 }
             }
@@ -144,6 +162,11 @@ namespace DPS
                         player.SendSuccessMessage(dpsplayer.notify ? "You will now receive DPS notifications." : "You will no longer receive DPS notifications.");
                         return;
                     }
+                    if (option == "notifyinterval")
+                    {
+                        player.SendErrorMessage(SyntaxErrorPrefix + "/dps notifyinterval <new interval>");
+                        return;
+                    }
                     else if (option == "reset")
                     {
                         dpsplayer.totaldamage = 0;
@@ -157,7 +180,25 @@ namespace DPS
                         return;
                     }
                 }
-                player.SendErrorMessage(SyntaxErrorPrefix + "/dps <show/notify/reset/brag>");
+                else if (args.Parameters.Count == 2)
+                {
+                    var option = args.Parameters[0].ToLower();
+                    var option2 = args.Parameters[1].ToLower();
+
+                    if (option == "notifyinterval")
+                    {
+                        int interval;
+                        if (!int.TryParse(args.Parameters[1], out interval))
+                        {
+                            player.SendErrorMessage(SyntaxErrorPrefix + "/dps notifyinterval <new interval>");
+                            return;
+                        }
+                        dpsplayer.notifyinterval = Convert.ToInt32(args.Parameters[1]);
+                        player.SendSuccessMessage(String.Format("You will now receive DPS notifications every {0} seconds.", dpsplayer.notifyinterval));
+                        return;
+                    }
+                }
+                player.SendErrorMessage(SyntaxErrorPrefix + "/dps <show/notify/notifyinterval/reset/brag>");
                 return;
             }
             catch (Exception e)

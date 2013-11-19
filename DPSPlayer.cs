@@ -21,6 +21,7 @@ namespace DPS
         public DateTime lasttime { get; set; }
         public int attackamount { get; set; }
         public string dpsstats { get; set; }
+        public int notifyinterval { get; set; }
 
 		public DPSPlayer(int index)
         {
@@ -35,6 +36,7 @@ namespace DPS
             this.lasttime = DateTime.Now;
             this.attackamount = 0;
             this.dpsstats = "";
+            this.notifyinterval = 5;
         }
     }
 }
