@@ -12,13 +12,10 @@ namespace DPS
         public TSPlayer TSPlayer { get { return TShock.Players[Index]; } }
         public bool notify { get; set; }
         public int totaldamage { get; set; }
-        public int prevtotaldamage { get; set; }
-        public int dpstotal { get; set; }
         public int dps { get; set; }
-        public bool countingdps { get; set; }
-        public int seconds { get; set; }
         public double timespan { get; set; }
-        public DateTime lasttime { get; set; }
+        public DateTime prevtime { get; set; }
+        public int prevdmg { get; set; }
         public int attackamount { get; set; }
         public string dpsstats { get; set; }
         public int notifyinterval { get; set; }
@@ -28,12 +25,9 @@ namespace DPS
             this.Index = index;
             this.notify = false;
             this.totaldamage = 0;
-            this.prevtotaldamage = 0;
-            this.dpstotal = 0;
-            this.countingdps = false;
-            this.seconds = 0;
             this.timespan = 0;
-            this.lasttime = DateTime.Now;
+            this.prevtime = DateTime.Now;
+            this.prevdmg = 0;
             this.attackamount = 0;
             this.dpsstats = "";
             this.notifyinterval = 5;
